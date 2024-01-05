@@ -44,7 +44,9 @@ router.get("/single/:id", async (req, res) => {
 router.get("/:id/categories", async (req, res) => {
   try {
     const { id } = req.params;
-    const categories = await Category.find({ restaurant: id });
+    const categories = await Category.find({ restaurant: id }).populate(
+      "restaurant"
+    );
     if (!categories) {
       return res.status(400).json({
         success: false,
@@ -67,6 +69,7 @@ router.get("/:id/items", async (req, res) => {
     const { id } = req.params;
     const { category } = req.query;
     // if no query string is passed
+    console.log(category);
     if (!category) {
       return res.status(500).json({
         success: false,
@@ -76,8 +79,17 @@ router.get("/:id/items", async (req, res) => {
     // finding the category with the restaurant id and category name
     const cat = await Category.findOne({
       restaurant: id,
-      category_name: category,
+      category_name: `${category}`,
     });
+
+    console.log(cat);
+    if (!cat) {
+      return res.status(400).json({
+        success: false,
+        message: "No category with this restaurant id and category name",
+      });
+    }
+
     // finding the items on the restaurant with thr restaurant id and category id
     const items = await Item.find({
       restaurant: id,
@@ -91,13 +103,6 @@ router.get("/:id/items", async (req, res) => {
       });
     }
 
-    if (!category) {
-      return res.status(400).json({
-        success: false,
-        message: "NO Query String Available",
-        data: items,
-      });
-    }
     const data = items;
 
     return res.status(200).json({

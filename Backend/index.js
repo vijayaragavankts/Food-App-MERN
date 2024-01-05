@@ -6,9 +6,12 @@ const restaurantRouter = require("./routes/restaurantRouter");
 const getCategoryFromRestaurantRouter = require("./routes/getCategoryFromRestaurantRouter");
 const getItemFromRestaurantRouter = require("./routes/getItemFromRestaurantRouter");
 const showRestaurantsToCustomer = require("./routes/showRestaurantsToCustomer");
-const session = require("express-session");
+const showItemsToRestaurant = require("./routes/showItemsToRestaurant");
+const deleteItemRouter = require("./routes/deleteItemRouter");
+
 const protectRestaurant = require("./Middleware/authmiddlewareRestaurant"); // middleware for protecting restaurant pages
 const protectCustomer = require("./Middleware/authmiddlewareCustomer"); // middleware for protecting customer pages
+const cors = require("cors");
 
 mongoose
   .connect("mongodb://localhost:27017/foodApp")
@@ -21,9 +24,11 @@ mongoose
 
 const app = express();
 app.use(
-  session({ secret: "THISISSECRET", resave: true, saveUninitialized: true })
+  cors({
+    origin: "http://localhost:3000", // Replace with the actual origin of your frontend
+    credentials: true,
+  })
 );
-
 app.use(express.json()); // middleware
 
 app.use("/", homeRouter);
@@ -39,6 +44,11 @@ app.use(
   protectRestaurant,
   getItemFromRestaurantRouter
 );
+
+app.use("/showItemsToRestaurant", protectRestaurant, showItemsToRestaurant);
+
+app.use("/deleteItem", protectRestaurant, deleteItemRouter);
+
 app.use(
   "/showRestaurantsToCustomer",
   protectCustomer,

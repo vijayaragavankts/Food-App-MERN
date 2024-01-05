@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Restaurant = require("../models/restaurantSchema");
 const bcrypt = require("bcrypt");
+const generateToken = require("../config/generateToken");
 
 router.get("/", (req, res) => {
   res.send("You are in Restaurant login/signup page"); // for demo
@@ -19,7 +20,6 @@ router.post("/register", async (req, res) => {
     }
     const restaurant = await new Restaurant(req.body);
     await restaurant.save();
-    req.session.restaurant_id = restaurant._id;
 
     return res.status(200).json({
       message: "Registration successful for a restaurant",
@@ -29,6 +29,9 @@ router.post("/register", async (req, res) => {
       location: restaurant.location,
       cuisine_type: restaurant.cuisine_type,
       rating: restaurant.rating,
+      image: restaurant.image,
+      token: generateToken(restaurant._id),
+      id: restaurant._id,
     });
   } catch (err) {
     console.log(err);
@@ -56,10 +59,13 @@ router.post("/login", async (req, res) => {
         message: "Entered name or password is wrong",
       });
     }
-    req.session.restaurant_id = restaurant._id;
+
     return res.status(200).json({
       success: true,
       message: "Successfully Logged in",
+      token: generateToken(restaurant._id),
+      id: restaurant._id,
+      name: restaurant.name,
     });
   } catch (err) {
     console.log(err);

@@ -4,11 +4,11 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   try {
-    const { category_name } = req.body;
-    const restaurant_id = req.session.restaurant_id;
+    const { category_name, image } = req.body;
     const category = await new Category({
       restaurant: restaurant_id,
       category_name: category_name,
+      image: image,
     });
     await category.save();
     if (category) {

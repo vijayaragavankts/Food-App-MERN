@@ -24,6 +24,9 @@ const restaurantSchema = new mongoose.Schema({
   rating: {
     type: Number,
   },
+  image: {
+    type: String,
+  },
 });
 
 restaurantSchema.pre("save", async function (next) {
