@@ -1,7 +1,13 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const NotFound = () => {
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate("/customerMain");
+  };
   return (
     <Flex
       align="center"
@@ -13,7 +19,8 @@ const NotFound = () => {
       <Heading mb={4} fontSize="6xl" color="red.500">
         404
       </Heading>
-      <Text fontSize="xl">Page Not Found</Text>
+      <Text fontSize="xl">Items Not Found in this Restaurant</Text>
+      <Button onClick={handleBack}>Back</Button>
     </Flex>
   );
 };

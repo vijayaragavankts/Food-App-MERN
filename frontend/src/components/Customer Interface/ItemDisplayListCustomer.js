@@ -31,7 +31,7 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
   // fetch items in that restaurant and category
   const fetchItems = async () => {
     try {
-      console.log(user.data.token);
+      // console.log(user.data.token);
       const config = {
         headers: {
           Authorization: `Bearer ${newUser.data.token}`,
