@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { State } from "../../Context/Provider";
 import axios from "axios";
 import { Box, Button, Flex, Image, Text, VStack } from "@chakra-ui/react";
+import NotFound from "../../NotFound";
 
 const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
   const { id } = useParams();
@@ -67,40 +68,42 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
   return (
     <div>
       <Flex justify="center" wrap="wrap">
-        {filteredAndSortedItems.map((item) => (
-          <Box
-            key={item._id}
-            maxW="sm"
-            borderWidth="1px"
-            borderRadius="lg"
-            overflow="hidden"
-            m={4}
-            boxShadow="base"
-          >
-            {/* <Link to={`/restaurant/${restaurant._id}`}> */}
-            <Image src={item.image} alt={item.name} />
-            <Box p={4}>
-              <Text fontSize="xl" fontWeight="bold">
-                {item.name}
-              </Text>
-              <Text fontSize="3xl" color="gray.600" fontStyle="bold">
-                {`$${item.price}`}
-              </Text>
-              <Text fontSize="md" color="gray.600">
-                {item.description}
-              </Text>
-              {/* <Flex align="center" mt={2}>
+        {filteredAndSortedItems
+          ? filteredAndSortedItems.map((item) => (
+              <Box
+                key={item._id}
+                maxW="sm"
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                m={4}
+                boxShadow="base"
+              >
+                {/* <Link to={`/restaurant/${restaurant._id}`}> */}
+                <Image src={item.image} alt={item.name} />
+                <Box p={4}>
+                  <Text fontSize="xl" fontWeight="bold">
+                    {item.name}
+                  </Text>
+                  <Text fontSize="3xl" color="gray.600" fontStyle="bold">
+                    {`$${item.price}`}
+                  </Text>
+                  <Text fontSize="md" color="gray.600">
+                    {item.description}
+                  </Text>
+                  {/* <Flex align="center" mt={2}>
                 <Badge colorScheme="green" mr={2}>
                   Rating: {restaurant.rating}
                 </Badge>
               </Flex> */}
-              <VStack mt={4} spacing={2}>
-                <Button colorScheme="teal">Order Now</Button>
-              </VStack>
-            </Box>
-            {/* </Link> */}
-          </Box>
-        ))}
+                  <VStack mt={4} spacing={2}>
+                    <Button colorScheme="teal">Order Now</Button>
+                  </VStack>
+                </Box>
+                {/* </Link> */}
+              </Box>
+            ))
+          : ""}
       </Flex>
     </div>
   );

@@ -4,6 +4,7 @@ import { State } from "../../Context/Provider";
 import axios from "axios";
 import RestaurantDetails from "./RestaurantDetails";
 import { Container } from "@chakra-ui/react";
+import NotFound from "../../NotFound";
 
 const RestaurantDetailsPage = () => {
   const { id } = useParams();
@@ -37,6 +38,10 @@ const RestaurantDetailsPage = () => {
         config
       );
 
+      if (!response) {
+        navigate("/notFound");
+        return;
+      }
       // Check if response.data is defined before accessing response.data.data
       if (response.data && response.data.data) {
         setRestaurantInfo(response.data.data);
@@ -44,7 +49,8 @@ const RestaurantDetailsPage = () => {
         console.error("Invalid response format:", response);
       }
     } catch (err) {
-      console.error(err);
+      console.log(err);
+      // navigate("/notFound");
     }
   };
 
@@ -56,7 +62,11 @@ const RestaurantDetailsPage = () => {
   return (
     <>
       <Container maxW="container.lg" mt={10}>
-        {restaurantInfo && <RestaurantDetails prop={restaurantInfo} />}
+        {restaurantInfo && restaurantInfo.length > 0 ? (
+          <RestaurantDetails prop={restaurantInfo} />
+        ) : (
+          <NotFound />
+        )}
       </Container>
     </>
   );

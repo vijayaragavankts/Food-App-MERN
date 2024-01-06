@@ -89,13 +89,16 @@ const ItemsDisplayRestaurant = ({ searchTerm, sortOrder }) => {
   useEffect(() => {
     // Set initial values when selectedItem changes
     if (selectedItem) {
-      setName(name || selectedItem.name);
-      setPrice(price || selectedItem.price);
-      setDescription(description || selectedItem.description);
       if (temp) {
+        setName(selectedItem.name);
+        setPrice(selectedItem.price);
+        setDescription(selectedItem.description);
         setLocalImage(selectedItem.image || "");
         setTemp(false);
       } else {
+        setName(name);
+        setPrice(price);
+        setDescription(description);
         setLocalImage(image);
       }
     }

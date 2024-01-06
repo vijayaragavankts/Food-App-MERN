@@ -9,6 +9,7 @@ import CustomerMain from "./components/Customer Interface/CustomerMain";
 import RestaurantDetailsPage from "./components/Customer Interface/RestaurantDetailsPage";
 import ItemsHotel from "./components/Customer Interface/ItemsHotel";
 import CreateNewItem from "./components/Restaurant Interface/CreateNewItem";
+import NotFound from "./NotFound";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         />
         <Route path="/:id/items" element={<ItemsHotel />} exact />
         <Route path="/create" element={<CreateNewItem />} exact />
+        <Route path="/notFound" element={<NotFound />} exact />
       </Routes>
     </div>
   );
