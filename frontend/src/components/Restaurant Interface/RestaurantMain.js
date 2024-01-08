@@ -1,7 +1,16 @@
-import { Box, Button, Container, Flex, Input, Select } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Icon,
+  Input,
+  Select,
+} from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import ItemsDisplayRestaurant from "./ItemsDisplayRestaurant";
 import { useNavigate } from "react-router-dom";
+import { AddIcon } from "@chakra-ui/icons";
 
 const RestaurantMain = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -72,7 +81,7 @@ const RestaurantMain = () => {
             <option value="desc">Descending</option>
           </Select>
           <Button colorScheme="green" onClick={handleCreate}>
-            Create New Item
+            <Icon as={AddIcon} /> &nbsp; Create New Item
           </Button>
         </Flex>
       </Container>

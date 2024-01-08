@@ -18,10 +18,10 @@ const RestaurantDetails = (restaurant) => {
 
   return (
     <>
+      <Text fontSize="5xl" fontWeight="bold" mb={2}>
+        Categories in {hotelName}
+      </Text>
       <Wrap spacing={4}>
-        <Text fontSize="5xl" fontWeight="bold" mb={2}>
-          Categories in {hotelName}
-        </Text>
         {restaurant.prop.map((category) => (
           <WrapItem
             key={category._id}

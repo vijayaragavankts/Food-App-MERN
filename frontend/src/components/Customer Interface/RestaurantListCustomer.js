@@ -5,12 +5,16 @@ import {
   Box,
   Button,
   Flex,
+  Icon,
   Image,
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { StarIcon } from "@chakra-ui/icons";
 import { State } from "../../Context/Provider";
 import { Link, useNavigate } from "react-router-dom";
+import image from "../../image/location-pin.png";
+import cartImage from "../../image/trolley.png";
 
 const RestaurantListCustomer = ({ searchTerm, filter, sortOrder }) => {
   const { user } = State();
@@ -75,37 +79,58 @@ const RestaurantListCustomer = ({ searchTerm, filter, sortOrder }) => {
             borderRadius="lg"
             overflow="hidden"
             m={4}
-            boxShadow="base"
+            boxShadow="md"
+            transition="transform 0.2s, box-shadow 0.2s"
+            _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
           >
-            <Link to={`/restaurant/${restaurant._id}`}>
-              <Image
-                src={
-                  restaurant.image
-                    ? restaurant.image
-                    : "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=600"
-                }
-                alt={restaurant.name}
-              />
-              <Box p={4}>
-                <Text fontSize="xl" fontWeight="bold">
-                  {restaurant.name}
+            <Image
+              src={
+                restaurant.image ||
+                "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=600"
+              }
+              alt={restaurant.name}
+              h="200px"
+              objectFit="cover"
+            />
+            <Box p={4}>
+              <Text fontSize="3xl" fontWeight="bold" mb={2} color="teal.500">
+                {restaurant.name}
+              </Text>
+              <VStack spacing={2} align="left">
+                <Text fontSize="lg" mb={1}>
+                  {`${restaurant.cuisine_type} Cuisine`}
                 </Text>
-                <Text fontSize="md" color="gray.600">
-                  Cuisine: {restaurant.cuisine_type}
+                <Text
+                  fontSize="md"
+                  color="gray.700"
+                  mb={2}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Image src={image} alt="Location:" boxSize="20px" mr={2} />
+                  <i>{restaurant.location}</i>
                 </Text>
-                <Text fontSize="md" color="gray.600">
-                  Location: {restaurant.location}
-                </Text>
-                <Flex align="center" mt={2}>
-                  <Badge colorScheme="green" mr={2}>
-                    Rating: {restaurant.rating}
-                  </Badge>
+                <Flex align="center" justifyContent="space-between">
+                  <span>
+                    <Badge colorScheme="green" mr={2} fontSize="xl">
+                      {restaurant.rating}
+                    </Badge>
+                    <Icon as={StarIcon} color="yellow.500" fontSize="xl" />
+                  </span>
+                  <span>
+                    <Link to={`${restaurant._id}/cart`}>
+                      <Image src={cartImage} alt="Cart" boxSize="30px" mr={2} />
+                    </Link>
+                  </span>
                 </Flex>
-                <VStack mt={4} spacing={2}>
-                  <Button colorScheme="teal">View Now</Button>
-                </VStack>
-              </Box>
-            </Link>
+                <Link to={`/restaurant/${restaurant._id}`}>
+                  <Button colorScheme="teal" variant="outline">
+                    View Now
+                  </Button>
+                </Link>
+              </VStack>
+            </Box>
           </Box>
         ))}
       </Flex>

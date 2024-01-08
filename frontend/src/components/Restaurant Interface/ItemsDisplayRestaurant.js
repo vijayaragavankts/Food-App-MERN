@@ -114,9 +114,9 @@ const ItemsDisplayRestaurant = ({ searchTerm, sortOrder }) => {
   const onClose = () => {
     setIsOpen(false);
     setTemp(false);
-    setName("");
-    setPrice("");
-    setDescription("");
+    // setName("");
+    // setPrice("");
+    // setDescription("");
   };
 
   const handleEdit = (item) => {
@@ -158,45 +158,53 @@ const ItemsDisplayRestaurant = ({ searchTerm, sortOrder }) => {
     } catch (err) {}
   };
 
-  const postDetails = (pics) => {
-    if (pics === undefined) {
-      return toast({
-        title: "Please select an Image",
-        status: "warning",
-        duration: 2000,
-        isClosable: true,
-        position: "bottom",
-      });
-    }
-    if (pics.type === "image/jpeg" || pics.type === "image/png") {
+  const postDetails = async (pics) => {
+    try {
+      if (pics === undefined) {
+        throw new Error("Please select an Image");
+      }
+
+      if (pics.type !== "image/jpeg" && pics.type !== "image/png") {
+        throw new Error("Please select a valid Image");
+      }
+
       const data = new FormData();
       data.append("file", pics);
       data.append("upload_preset", "food-app");
       data.append("cloud_name", "vijayaragavan");
-      fetch("https://api.cloudinary.com/v1_1/vijayaragavan/image/upload", {
-        method: "post",
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setImage(data.url.toString());
 
-          toast({
-            title: "Image Uploaded Successfully",
-            status: "success",
-            duration: 2000,
-            isClosable: true,
-            position: "bottom",
-          });
-          console.log(image);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      return toast({
-        title: "Please select an Image",
-        status: "warning",
+      const toastId = toast({
+        title: "Uploading Image...",
+        status: "info",
+        duration: null,
+        isClosable: false,
+        position: "bottom",
+      });
+
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/vijayaragavan/image/upload",
+        {
+          method: "post",
+          body: data,
+        }
+      );
+
+      const imageData = await response.json();
+
+      toast.update(toastId, {
+        title: "Image Uploaded Successfully",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+
+      setImage(imageData.url.toString());
+    } catch (err) {
+      console.error(err);
+
+      toast({
+        title: "Image Upload Failed",
+        status: "error",
         duration: 2000,
         isClosable: true,
         position: "bottom",
