@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const orderSchema = new mongoose.Schema({
+const deliverSchema = new mongoose.Schema({
   customer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Customer",
@@ -10,20 +10,17 @@ const orderSchema = new mongoose.Schema({
     ref: "Restaurant",
   },
   item: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: [mongoose.Schema.Types.ObjectId],
     ref: "Item",
   },
   quantity: {
-    type: Number,
-    default: 1,
-    minimum: 0,
+    type: [Number],
   },
-  price: {
+  total: {
     type: Number,
-    minimum: 0,
   },
 });
 
-const Order = mongoose.model("Order", orderSchema);
+const Deliver = mongoose.model("Deliver", deliverSchema);
 
-module.exports = Order;
+module.exports = Deliver;

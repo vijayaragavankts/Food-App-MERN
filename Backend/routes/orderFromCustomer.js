@@ -45,13 +45,30 @@ router.get("/customer/:id", async (req, res) => {
     const { id } = req.params; // customer Id
     const data = await Order.find({ customer: id });
     if (data) {
-      res
-        .status(201)
-        .json({
-          message: "Getting Order Data from DB is Successful",
-          success: true,
-          data: data,
-        });
+      res.status(201).json({
+        message: "Getting Order Data from DB is Successful",
+        success: true,
+        data: data,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.get("/customer/:customer/:restaurant", async (req, res) => {
+  try {
+    const { customer, restaurant } = req.params;
+    const data = await Order.find({
+      customer: customer,
+      restaurant: restaurant,
+    }).populate("item");
+    if (data) {
+      res.status(200).json({
+        success: true,
+        message: "Successfully Displaying all the items",
+        data: data,
+      });
     }
   } catch (err) {
     console.log(err);
