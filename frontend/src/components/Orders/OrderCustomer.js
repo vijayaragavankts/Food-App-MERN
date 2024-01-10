@@ -20,12 +20,14 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import axios from "axios";
+import { State } from "../../Context/Provider";
 
 const OrderCustomer = () => {
   const [newUser, setNewUser] = useState(null);
-
+  const { user } = State();
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isPayment, setIsPayment] = useState(false);
   const navigate = useNavigate();
   const toast = useToast();
   const { id } = useParams();
@@ -131,13 +133,117 @@ const OrderCustomer = () => {
 
   console.log(cartItems);
 
+  const initpayment = (data) => {
+    const options = {
+      key: "rzp_test_Wa2s8fVV4XSYsM",
+      amount: data.amount,
+      currency: data.currency,
+      description: "Test Transaction",
+      order_id: data.id,
+      handler: async (response) => {
+        try {
+          const verifyUrl = "http://localhost:5000/api/payment/verify";
+          const { data } = await axios.post(verifyUrl, response);
+          console.log(data);
+          if (data) {
+            console.log("world");
+            try {
+              console.log("hello");
+              const config = {
+                headers: {
+                  Authorization: `Bearer ${user.data.token}`,
+                },
+              };
+              // saving data in db
+              const data = await axios.post(
+                `http://localhost:5000/orderRestaurant`,
+                {
+                  restaurant: id,
+                  customer: user.data.id,
+                  items: cartItems.map((item) => item.item._id),
+                  quantity: cartItems.map((item) => item.quantity),
+                  total: calculateTotal(),
+                },
+                config
+              );
+
+              console.log("Server Response:", data);
+
+              if (data) {
+                toast({
+                  title: "Payment was Successful",
+                  status: "success",
+                  duration: 2000,
+                  isClosable: true,
+                  position: "bottom",
+                });
+
+                // delete the items in db --- customer and restaurant id required
+                const restaurant = id;
+                const customer = newUser.data.id;
+                try {
+                  const config = {
+                    headers: {
+                      Authorization: `Bearer ${user.data.token}`,
+                    },
+                  };
+                  const data = await axios.delete(
+                    `http://localhost:5000/orderFromCustomer/${customer}/${restaurant}`,
+
+                    config
+                  );
+                  console.log(data);
+                } catch (err) {
+                  console.log(err);
+                }
+
+                // before navigating to the customerMain have to delete all items present in the cart
+                navigate("/customerMain");
+              }
+            } catch (err) {
+              console.log(err);
+              toast({
+                title: "Error occurred in payment",
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+                position: "bottom",
+              });
+            }
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+
+    // Create a new instance of Razorpay
+    const rzp1 = new window.Razorpay(options);
+
+    // Open the payment modal
+    rzp1.on("payment.failed", function (response) {
+      console.log(response.error.code);
+      console.log(response.error.description);
+      console.log(response.error.source);
+      console.log(response.error.step);
+      console.log(response.error.reason);
+      console.log(response.error.metadata.order_id);
+      console.log(response.error.metadata.payment_id);
+    });
+
+    rzp1.open();
+  };
+
   const handleCheckout = async (cartItems) => {
     const restaurant = id;
     const customer = newUser.data.id;
     const items = cartItems.map((item) => item.item._id);
     const quantity = cartItems.map((item) => item.quantity);
     const totalAmount = calculateTotal(); // Calculate total on the client side
-
+    setIsPayment(false);
     console.log("Request Payload:", {
       restaurant,
       customer,
@@ -146,45 +252,19 @@ const OrderCustomer = () => {
       totalAmount,
     });
 
+    // razorpay payment code
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${newUser.data.token}`,
-        },
-      };
-
-      const data = await axios.post(
-        `http://localhost:5000/orderRestaurant`,
-        {
-          restaurant,
-          customer,
-          items,
-          quantity,
-          total: totalAmount,
-        },
-        config
-      );
-
-      console.log("Server Response:", data);
-
-      if (data) {
-        toast({
-          title: "Payment was Successful",
-          status: "success",
-          duration: 2000,
-          isClosable: true,
-          position: "bottom",
-        });
-      }
+      // const config = {
+      //   headers: {
+      //     Authorization: `Bearer ${newUser.data.token}`,
+      //   },
+      // };
+      const orderUrl = "http://localhost:5000/api/payment/orders";
+      const { data } = await axios.post(orderUrl, { totalAmount });
+      console.log(data);
+      initpayment(data.data);
     } catch (err) {
-      console.log(err);
-      toast({
-        title: "Error occurred in payment",
-        status: "error",
-        duration: 2000,
-        isClosable: true,
-        position: "bottom",
-      });
+      console.log("Error in payment", err);
     }
   };
 

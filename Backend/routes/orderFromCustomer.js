@@ -40,6 +40,20 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+router.delete("/:cid/:rid", async (req, res) => {
+  try {
+    const { cid, rid } = req.params;
+    const order = await Order.deleteMany({ customer: cid, restaurant: rid });
+    if (order) {
+      console.log("Cart is successfully emptied");
+      res.status(200).json({ message: "Cart is successfully emptied" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 router.get("/customer/:id", async (req, res) => {
   try {
     const { id } = req.params; // customer Id

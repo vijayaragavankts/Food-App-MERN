@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import ItemsDisplayRestaurant from "./ItemsDisplayRestaurant";
 import { useNavigate } from "react-router-dom";
 import { AddIcon } from "@chakra-ui/icons";
+import { InfoOutlineIcon } from "@chakra-ui/icons";
 
 const RestaurantMain = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,6 +34,10 @@ const RestaurantMain = () => {
     navigate("/create");
   };
 
+  const handleOrder = () => {
+    navigate("/restaurantOrders");
+  };
+
   // const handleFilterChange = (event) => {
   //   const value = event.target.value;
   //   setFilter(value);
@@ -46,7 +51,7 @@ const RestaurantMain = () => {
   return (
     <>
       <Container maxW="container.lg" mt={10}>
-        <Box textAlign="center" mb={6}>
+        <Box textAlign="center">
           <Input
             type="text"
             placeholder="Search items..."
@@ -56,6 +61,13 @@ const RestaurantMain = () => {
             maxW="400px"
           />
         </Box>
+
+        <Flex justify="flex-end" mb={6}>
+          <Button colorScheme="purple" onClick={handleOrder}>
+            <Icon as={InfoOutlineIcon} /> &nbsp; View Orders
+          </Button>
+        </Flex>
+
         <Flex justify="space-between" align="center" mb={6}>
           {/* <Select
             placeholder="Filter by..."
@@ -77,9 +89,10 @@ const RestaurantMain = () => {
             width="150px"
           >
             {/* Add your sort options */}
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
+            <option value="asc">Lowest</option>
+            <option value="desc">Highest</option>
           </Select>
+
           <Button colorScheme="green" onClick={handleCreate}>
             <Icon as={AddIcon} /> &nbsp; Create New Item
           </Button>

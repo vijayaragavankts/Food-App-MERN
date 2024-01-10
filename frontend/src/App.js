@@ -11,6 +11,7 @@ import ItemsHotel from "./components/Customer Interface/ItemsHotel";
 import CreateNewItem from "./components/Restaurant Interface/CreateNewItem";
 import NotFound from "./NotFound";
 import OrderCustomer from "./components/Orders/OrderCustomer";
+import OrderRestaurant from "./components/Orders/OrderRestaurant";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           element={<OrderCustomer />}
           exact
         />
+        <Route path="/restaurantOrders" element={<OrderRestaurant />} exact />
       </Routes>
     </div>
   );

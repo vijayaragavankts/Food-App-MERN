@@ -10,6 +10,7 @@ const showItemsToRestaurant = require("./routes/showItemsToRestaurant");
 const deleteItemRouter = require("./routes/deleteItemRouter");
 const orderFromCustomer = require("./routes/orderFromCustomer");
 const orderRestaurant = require("./routes/orderRestaurant");
+const payment = require("./routes/payment");
 
 const protectRestaurant = require("./Middleware/authmiddlewareRestaurant"); // middleware for protecting restaurant pages
 const protectCustomer = require("./Middleware/authmiddlewareCustomer"); // middleware for protecting customer pages
@@ -61,6 +62,9 @@ app.use(
 app.use("/orderFromCustomer", protectCustomer, orderFromCustomer);
 
 app.use("/orderRestaurant", protectCustomer, orderRestaurant);
+
+// payment route
+app.use("/api/payment", payment);
 
 app.listen(5000, () => {
   console.log("Serving in the port 5000");
