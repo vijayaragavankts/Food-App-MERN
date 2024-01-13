@@ -16,14 +16,18 @@ const protectRestaurant = require("./Middleware/authmiddlewareRestaurant"); // m
 const protectCustomer = require("./Middleware/authmiddlewareCustomer"); // middleware for protecting customer pages
 const cors = require("cors");
 
-mongoose
-  .connect("mongodb://localhost:27017/foodApp")
-  .then(() => {
-    console.log("Database Connected");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// mongoose
+//   .connect("mongodb://localhost:27017/foodApp")
+//   .then(() => {
+//     console.log("Database Connected");
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+mongoose.connect(
+  "mongodb+srv://vijayaragavankts:vijayaragavankts@cluster0.r3tsawm.mongodb.net/foodApp?retryWrites=true&w=majority"
+);
 
 const app = express();
 app.use(

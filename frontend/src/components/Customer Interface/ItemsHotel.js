@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import ItemDisplayListCustomer from "./ItemDisplayListCustomer";
 import { useNavigate } from "react-router-dom";
-import imageup from "../../image/arrow-up-2826.png";
 
 const ItemsHotel = () => {
   const [searchTerm, setSearchTerm] = useState("");
