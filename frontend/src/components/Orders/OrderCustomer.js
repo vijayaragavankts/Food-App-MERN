@@ -151,7 +151,7 @@ const OrderCustomer = () => {
               console.log("hello");
               const config = {
                 headers: {
-                  Authorization: `Bearer ${user.data.token}`,
+                  Authorization: `Bearer ${newUser.data.token}`,
                 },
               };
               // saving data in db
@@ -159,7 +159,7 @@ const OrderCustomer = () => {
                 `http://localhost:5000/orderRestaurant`,
                 {
                   restaurant: id,
-                  customer: user.data.id,
+                  customer: newUser.data.id,
                   items: cartItems.map((item) => item.item._id),
                   quantity: cartItems.map((item) => item.quantity),
                   total: calculateTotal(),
@@ -184,7 +184,7 @@ const OrderCustomer = () => {
                 try {
                   const config = {
                     headers: {
-                      Authorization: `Bearer ${user.data.token}`,
+                      Authorization: `Bearer ${newUser.data.token}`,
                     },
                   };
                   const data = await axios.delete(

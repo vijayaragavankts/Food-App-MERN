@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
+  Badge,
   Box,
+  Button,
   Heading,
   Table,
   Tbody,
@@ -9,6 +11,7 @@ import {
   Th,
   Thead,
   Tr,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { State } from "../../Context/Provider";
@@ -19,7 +22,9 @@ const OrderRestaurant = () => {
   const [newHotel, setNewHotel] = useState();
   const { hotel } = State();
   const navigate = useNavigate();
+  const [temp, setTemp] = useState(false);
   const [info, setInfo] = useState([]);
+  const toast = useToast();
 
   useEffect(() => {
     const storedHotel = JSON.parse(localStorage.getItem("hotelInfo"));
@@ -35,11 +40,11 @@ const OrderRestaurant = () => {
       try {
         const config = {
           headers: {
-            Authorization: `Bearer ${hotel.data.token}`,
+            Authorization: `Bearer ${newHotel.data.token}`,
           },
         };
         const { data } = await axios.get(
-          `http://localhost:5000/orderRestaurant/${hotel.data.id}`,
+          `http://localhost:5000/orderRestaurant/${newHotel.data.id}`,
           config
         );
         console.log(data.data);
@@ -47,26 +52,59 @@ const OrderRestaurant = () => {
       } catch (err) {
         console.log(err);
       } finally {
-        // setLoading(false);
+        setLoading(false);
       }
     };
     fetchorders();
-  }, []);
+  }, [hotel, newHotel, temp]);
 
-  const handleTotal = (itemArray, qtyArray) => {
-    let total = 0;
+  // const handleTotal = (itemArray, qtyArray) => {
+  //   let total = 0;
 
-    // Iterate over each item in the array
-    for (let i = 0; i < itemArray.length; i++) {
-      // Calculate the subtotal for the current item (price * quantity)
-      const subtotal = itemArray[i].price * qtyArray[i];
+  //   // Iterate over each item in the array
+  //   for (let i = 0; i < itemArray.length; i++) {
+  //     // Calculate the subtotal for the current item (price * quantity)
+  //     const subtotal = itemArray[i].price * qtyArray[i];
 
-      // Add the subtotal to the total
-      total += subtotal;
+  //     // Add the subtotal to the total
+  //     total += subtotal;
+  //   }
+
+  //   // Return the total amount
+  //   return total;
+  // };
+
+  const handleDelivery = async (id) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${newHotel.data.token}`,
+        },
+      };
+      const data = await axios.delete(
+        `http://localhost:5000/orderRestaurant/${id}`,
+        config
+      );
+      if (data) {
+        toast({
+          title: "Items Delivered Successfully",
+          duration: 1500,
+          isClosable: true,
+          position: "bottom",
+          status: "success",
+        });
+        setTemp(!temp);
+      }
+    } catch (err) {
+      console.log(err);
+      toast({
+        title: "Error occured in Deleting Order",
+        duration: 1500,
+        isClosable: true,
+        position: "bottom",
+        status: "error",
+      });
     }
-
-    // Return the total amount
-    return total;
   };
 
   return (
@@ -87,6 +125,8 @@ const OrderRestaurant = () => {
               <Th fontSize="md">Customer</Th>
               <Th fontSize="md">Items</Th>
               <Th fontSize="md">Total Amount</Th>
+              <Th fontSize="md">status</Th>
+              <Th fontSize="md">Action</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -94,10 +134,29 @@ const OrderRestaurant = () => {
               <Tr key={order._id}>
                 <Td>{order._id}</Td>
                 <Td>{order.customer.username}</Td>
-                <Td>{/* Display items here */}</Td>
-                <Td>${() => handleTotal(order.item, order.quantity)}</Td>
+                <Td>
+                  {order.item.map((item, idx) => (
+                    <span key={item._id}>
+                      {item.name} : {order.quantity[idx]},{" "}
+                    </span>
+                  ))}
+                </Td>
+                <Td>${order.total}</Td>
+                <Td>
+                  <Badge colorScheme="green" mr={2}>
+                    Paid
+                  </Badge>
+                </Td>
+                <Td>
+                  <Button
+                    colorScheme="teal"
+                    size="sm"
+                    onClick={() => handleDelivery(order._id)}
+                  >
+                    Deliver
+                  </Button>
+                </Td>
               </Tr>
-              // order.totalAmount
             ))}
           </Tbody>
         </Table>

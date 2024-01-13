@@ -28,6 +28,7 @@ router.post("/register", async (req, res) => {
       password: customer.password,
       address: customer.address,
       token: generateToken(customer._id),
+      id: customer._id,
     });
   } catch (err) {
     console.log(err);

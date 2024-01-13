@@ -63,6 +63,8 @@ const CustomerMain = () => {
             <option value="all">All</option>
             <option value="Indian">Indian</option>
             <option value="Mexican">Mexican</option>
+            <option value="American">American</option>
+            <option value="Chinese">Chinese</option>
           </Select>
           <Select
             placeholder="Sort by..."
@@ -71,8 +73,8 @@ const CustomerMain = () => {
             width="150px"
           >
             {/* Add your sort options */}
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
+            <option value="asc">Ascending </option>
+            <option value="desc">Descending </option>
           </Select>
         </Flex>
       </Container>

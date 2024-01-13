@@ -61,7 +61,7 @@ app.use(
 // order
 app.use("/orderFromCustomer", protectCustomer, orderFromCustomer);
 
-app.use("/orderRestaurant", protectCustomer, orderRestaurant);
+app.use("/orderRestaurant", orderRestaurant);
 
 // payment route
 app.use("/api/payment", payment);

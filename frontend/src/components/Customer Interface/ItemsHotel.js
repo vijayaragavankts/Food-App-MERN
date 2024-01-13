@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from "react";
 
-import { Box, Container, Flex, Input, Select } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Flex,
+  Image,
+  Input,
+  Select,
+  Text,
+} from "@chakra-ui/react";
 import ItemDisplayListCustomer from "./ItemDisplayListCustomer";
 import { useNavigate } from "react-router-dom";
+import imageup from "../../image/arrow-up-2826.png";
 
 const ItemsHotel = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -47,8 +56,8 @@ const ItemsHotel = () => {
             width="150px"
           >
             {/* Add your sort options */}
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
+            <option value="asc">Lowest</option>
+            <option value="desc">Highest</option>
           </Select>
         </Flex>
       </Container>
