@@ -26,7 +26,7 @@ const cors = require("cors");
 //   });
 
 mongoose.connect(
-  "mongodb+srv://vijayaragavankts:vijayaragavankts@cluster0.r3tsawm.mongodb.net/foodApp?retryWrites=true&w=majority"
+  "mongodb+srv://vijay:vijay@cluster0.r3tsawm.mongodb.net/foodApp?retryWrites=true&w=majority"
 );
 
 const app = express();
