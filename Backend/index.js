@@ -32,7 +32,10 @@ mongoose.connect(process.env.MONGO_URI);
 const app = express();
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://mern-food-app.onrender.com"], // Replace with the actual origin of your frontend
+    origin: [
+      "http://localhost:3000",
+      "https://backend-food-app-api.onrender.com",
+    ], // Replace with the actual origin of your frontend
     credentials: true,
   })
 );
