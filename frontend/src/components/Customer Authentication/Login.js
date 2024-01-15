@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { URL } from "../../App";
 
 // clearing localStorage
 // localStorage.clear();
@@ -42,7 +43,7 @@ const Login = () => {
     }
     try {
       const data = await axios.post(
-        "http://localhost:5000/customer/login",
+        `${URL}/customer/login`,
         {
           username,
           password,

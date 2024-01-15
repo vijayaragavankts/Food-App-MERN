@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { URL } from "../../App";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -49,7 +50,7 @@ const Signup = () => {
       });
     }
     try {
-      const data = await axios.post("http://localhost:5000/customer/register", {
+      const data = await axios.post(`${URL}/customer/register`, {
         username,
         email,
         address,

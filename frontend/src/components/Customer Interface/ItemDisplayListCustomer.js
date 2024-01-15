@@ -14,6 +14,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import NotFound from "../../NotFound";
+import { URL } from "../../App";
 
 const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
   const { id } = useParams();
@@ -50,7 +51,7 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
         },
       };
       const { data } = await axios.get(
-        `http://localhost:5000/showRestaurantsToCustomer/${id}/items?category=${category}`,
+        `${URL}/showRestaurantsToCustomer/${id}/items?category=${category}`,
         config
       );
 
@@ -83,7 +84,7 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
           },
         };
         const { data } = await axios.get(
-          `http://localhost:5000/orderFromCustomer/customer/${newUser.data.id}`,
+          `${URL}/orderFromCustomer/customer/${newUser.data.id}`,
           config
         );
 
@@ -129,7 +130,7 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
       } else {
         // Item is not in the cart, add it
         const data = await axios.post(
-          `http://localhost:5000/orderFromCustomer`,
+          `${URL}/orderFromCustomer`,
           { itemId, price, restaurant, quantity, customer },
           config
         );
@@ -169,7 +170,7 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
       };
 
       const data = await axios.delete(
-        `http://localhost:5000/orderFromCustomer/${itemId}`,
+        `${URL}/orderFromCustomer/${itemId}`,
         config
       );
 

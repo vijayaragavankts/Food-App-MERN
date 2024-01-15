@@ -16,6 +16,8 @@ const protectRestaurant = require("./Middleware/authmiddlewareRestaurant"); // m
 const protectCustomer = require("./Middleware/authmiddlewareCustomer"); // middleware for protecting customer pages
 const cors = require("cors");
 
+require("dotenv").config();
+
 // mongoose
 //   .connect("mongodb://localhost:27017/foodApp")
 //   .then(() => {
@@ -24,18 +26,17 @@ const cors = require("cors");
 //   .catch((err) => {
 //     console.log(err);
 //   });
-
-mongoose.connect(
-  "mongodb+srv://vijay:vijay@cluster0.r3tsawm.mongodb.net/foodApp?retryWrites=true&w=majority"
-);
+console.log(process.env.MONGO_URI);
+mongoose.connect(process.env.MONGO_URI);
 
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:3000", // Replace with the actual origin of your frontend
+    origin: ["http://localhost:3000", "https://mern-food-app.onrender.com"], // Replace with the actual origin of your frontend
     credentials: true,
   })
 );
+
 app.use(express.json()); // middleware
 
 app.use("/", homeRouter);

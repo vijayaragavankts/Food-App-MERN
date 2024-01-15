@@ -12,6 +12,7 @@ import { useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { State } from "../../Context/Provider";
+import { URL } from "../../App";
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -38,7 +39,7 @@ const Login = () => {
       });
     }
     try {
-      const data = await axios.post("http://localhost:5000/restaurant/login", {
+      const data = await axios.post(`${URL}/restaurant/login`, {
         name,
         password,
       });

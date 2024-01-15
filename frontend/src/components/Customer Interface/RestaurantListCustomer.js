@@ -15,6 +15,7 @@ import { State } from "../../Context/Provider";
 import { Link, useNavigate } from "react-router-dom";
 import image from "../../image/location-pin.png";
 import cartImage from "../../image/trolley.png";
+import { URL } from "../../App";
 
 const RestaurantListCustomer = ({ searchTerm, filter, sortOrder }) => {
   const { user } = State();
@@ -39,7 +40,7 @@ const RestaurantListCustomer = ({ searchTerm, filter, sortOrder }) => {
         },
       };
       const { data } = await axios.get(
-        "http://localhost:5000/showRestaurantsToCustomer",
+        `${URL}/showRestaurantsToCustomer`,
         config
       );
       //   console.log(data.data);

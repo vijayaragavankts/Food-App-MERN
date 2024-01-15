@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { State } from "../../Context/Provider";
 import { useNavigate } from "react-router-dom";
+import { URL } from "../../App";
 
 const CreateNewItem = () => {
   const { hotel } = State();
@@ -104,7 +105,7 @@ const CreateNewItem = () => {
       };
       const restaurant = localStorage.getItem("restaurantId");
       const data = await axios.post(
-        "http://localhost:5000/getItemsfromRestaurant",
+        `${URL}/getItemsfromRestaurant`,
         { name, price, description, category, image, restaurant },
         config
       );

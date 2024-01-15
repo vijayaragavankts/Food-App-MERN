@@ -21,6 +21,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { State } from "../../Context/Provider";
+import { URL } from "../../App";
 
 const OrderCustomer = () => {
   const [newUser, setNewUser] = useState(null);
@@ -55,7 +56,7 @@ const OrderCustomer = () => {
       };
 
       const { data } = await axios.get(
-        `http://localhost:5000/orderFromCustomer/customer/${newUser.data.id}/${id}`,
+        `${URL}/orderFromCustomer/customer/${newUser.data.id}/${id}`,
         config
       );
 
@@ -86,10 +87,7 @@ const OrderCustomer = () => {
           Authorization: `Bearer ${newUser.data.token}`,
         },
       };
-      await axios.delete(
-        `http://localhost:5000/orderFromCustomer/${itemId}`,
-        config
-      );
+      await axios.delete(`${URL}/orderFromCustomer/${itemId}`, config);
 
       const newCartItems = cartItems.filter((item) => item.item._id !== itemId);
       setCartItems(newCartItems);
@@ -142,7 +140,7 @@ const OrderCustomer = () => {
       order_id: data.id,
       handler: async (response) => {
         try {
-          const verifyUrl = "http://localhost:5000/api/payment/verify";
+          const verifyUrl = `${URL}/api/payment/verify`;
           const { data } = await axios.post(verifyUrl, response);
           console.log(data);
           if (data) {
@@ -156,7 +154,7 @@ const OrderCustomer = () => {
               };
               // saving data in db
               const data = await axios.post(
-                `http://localhost:5000/orderRestaurant`,
+                `${URL}/orderRestaurant`,
                 {
                   restaurant: id,
                   customer: newUser.data.id,
@@ -188,7 +186,7 @@ const OrderCustomer = () => {
                     },
                   };
                   const data = await axios.delete(
-                    `http://localhost:5000/orderFromCustomer/${customer}/${restaurant}`,
+                    `${URL}/orderFromCustomer/${customer}/${restaurant}`,
 
                     config
                   );
@@ -259,7 +257,7 @@ const OrderCustomer = () => {
       //     Authorization: `Bearer ${newUser.data.token}`,
       //   },
       // };
-      const orderUrl = "http://localhost:5000/api/payment/orders";
+      const orderUrl = `${URL}/api/payment/orders`;
       const { data } = await axios.post(orderUrl, { totalAmount });
       console.log(data);
       initpayment(data.data);

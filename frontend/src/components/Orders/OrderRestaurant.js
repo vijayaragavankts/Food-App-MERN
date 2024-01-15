@@ -16,6 +16,7 @@ import {
 import axios from "axios";
 import { State } from "../../Context/Provider";
 import { useNavigate } from "react-router-dom";
+import { URL } from "../../App";
 
 const OrderRestaurant = () => {
   const [loading, setLoading] = useState(true);
@@ -44,7 +45,7 @@ const OrderRestaurant = () => {
           },
         };
         const { data } = await axios.get(
-          `http://localhost:5000/orderRestaurant/${newHotel.data.id}`,
+          `${URL}/orderRestaurant/${newHotel.data.id}`,
           config
         );
         console.log(data.data);
@@ -81,10 +82,7 @@ const OrderRestaurant = () => {
           Authorization: `Bearer ${newHotel.data.token}`,
         },
       };
-      const data = await axios.delete(
-        `http://localhost:5000/orderRestaurant/${id}`,
-        config
-      );
+      const data = await axios.delete(`${URL}/orderRestaurant/${id}`, config);
       if (data) {
         toast({
           title: "Items Delivered Successfully",

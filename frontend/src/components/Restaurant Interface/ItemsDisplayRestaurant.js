@@ -24,6 +24,7 @@ import {
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { State } from "../../Context/Provider";
 import { useNavigate } from "react-router-dom";
+import { URL } from "../../App";
 
 const ItemsDisplayRestaurant = ({ searchTerm, sortOrder }) => {
   const { hotel, restaurantId, setRestaurantId, isInRestaurantMain } = State();
@@ -52,7 +53,7 @@ const ItemsDisplayRestaurant = ({ searchTerm, sortOrder }) => {
       const id = localStorage.getItem("restaurantId");
       console.log(id);
       const { data } = await axios.get(
-        `http://localhost:5000/showItemsToRestaurant/${id}`,
+        `${URL}/showItemsToRestaurant/${id}`,
         config
       );
       console.log(data.data);
@@ -142,7 +143,7 @@ const ItemsDisplayRestaurant = ({ searchTerm, sortOrder }) => {
       };
 
       const data = await axios.delete(
-        `http://localhost:5000/deleteItem/${itemId}/delete`,
+        `${URL}/deleteItem/${itemId}/delete`,
         config
       );
       if (data) {
@@ -234,7 +235,7 @@ const ItemsDisplayRestaurant = ({ searchTerm, sortOrder }) => {
       const itemId = selectedItem._id;
       console.log(itemId);
       const data = await axios.put(
-        `http://localhost:5000/getItemsfromRestaurant/`,
+        `${URL}/getItemsfromRestaurant/`,
         {
           name,
           price,
