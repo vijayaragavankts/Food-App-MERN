@@ -12,7 +12,7 @@ import { useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { State } from "../../Context/Provider";
-import { URL } from "../../App";
+import { URL } from "../../Urls";
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -29,14 +29,23 @@ const Login = () => {
   };
 
   const submitHandler = async () => {
+    const loadingToastId = toast({
+      title: "Connecting to the server...",
+      duration: null, // Set duration to null for indefinite duration
+      status: "info",
+      isClosable: false,
+      position: "top",
+    });
     if (!name || !password) {
-      return toast({
+      toast({
         title: "Please fill all the fields",
         duration: 200,
         status: "warning",
         isClosable: true,
         position: "top",
       });
+      toast.close(loadingToastId);
+      return;
     }
     try {
       const data = await axios.post(`${URL}/restaurant/login`, {
@@ -54,6 +63,7 @@ const Login = () => {
       localStorage.setItem("hotelInfo", JSON.stringify(data));
       localStorage.setItem("restaurantId", data.data.id);
       navigate("/restaurantMain");
+      toast.close(loadingToastId);
       return;
     } catch (err) {
       toast({
@@ -63,6 +73,8 @@ const Login = () => {
         duration: 1500,
         isClosable: true,
       });
+      toast.close(loadingToastId);
+      return;
     }
   };
 

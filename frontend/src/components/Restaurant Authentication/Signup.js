@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { URL } from "../../App";
+import { URL } from "../../Urls";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -35,6 +35,14 @@ const Signup = () => {
   };
 
   const submitHandler = async () => {
+    const loadingToastId = toast({
+      title: "Connecting to the server...",
+      duration: null, // Set duration to null for indefinite duration
+      status: "info",
+      isClosable: false,
+      position: "top",
+    });
+
     if (
       !name ||
       !email ||
@@ -43,22 +51,26 @@ const Signup = () => {
       !password ||
       !confirmpassword
     ) {
-      return toast({
+      toast({
         title: "Please fill all the required fields",
         duration: 2000,
         status: "warning",
         isClosable: true,
         position: "top",
       });
+      toast.close(loadingToastId);
+      return;
     }
     if (password !== confirmpassword) {
-      return toast({
+      toast({
         title: "Passwords not match",
         duration: 2000,
         status: "warning",
         isClosable: true,
         position: "top",
       });
+      toast.close(loadingToastId);
+      return;
     }
     try {
       const data = await axios.post(`${URL}/restaurant/register`, {
@@ -81,6 +93,8 @@ const Signup = () => {
       localStorage.setItem("hotelInfo", JSON.stringify(data));
       localStorage.setItem("restaurantId", data.data.id);
       navigate("/restaurantMain");
+      toast.close(loadingToastId);
+
       return;
     } catch (err) {
       toast({
@@ -91,6 +105,8 @@ const Signup = () => {
         isClosable: true,
         position: "bottom",
       });
+      toast.close(loadingToastId);
+      return;
     }
   };
 

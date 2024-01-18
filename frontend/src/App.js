@@ -13,8 +13,6 @@ import NotFound from "./NotFound";
 import OrderCustomer from "./components/Orders/OrderCustomer";
 import OrderRestaurant from "./components/Orders/OrderRestaurant";
 
-export const URL = process.env.REACT_APP_SERVER_URL;
-
 function App() {
   return (
     <div className="App">

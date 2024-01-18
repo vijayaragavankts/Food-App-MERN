@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { State } from "../../Context/Provider";
 import { useNavigate } from "react-router-dom";
-import { URL } from "../../App";
+import { URL } from "../../Urls";
 
 const CreateNewItem = () => {
   const { hotel } = State();
@@ -22,6 +22,7 @@ const CreateNewItem = () => {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("Main Courses");
   const [image, setImage] = useState("");
+  const [newHotel, setNewHotel] = useState("");
 
   const toast = useToast();
   const navigate = useNavigate();
@@ -30,6 +31,8 @@ const CreateNewItem = () => {
     if (!localStorage.getItem("restaurantId")) {
       navigate("/");
     }
+    const storedHotel = JSON.parse(localStorage.getItem("hotelInfo"));
+    setNewHotel(storedHotel);
   }, []);
 
   const postDetails = async (pics) => {
@@ -100,7 +103,7 @@ const CreateNewItem = () => {
     try {
       const config = {
         headers: {
-          Authorization: `Bearer ${hotel.data.token}`,
+          Authorization: `Bearer ${newHotel.data.token}`,
         },
       };
       const restaurant = localStorage.getItem("restaurantId");

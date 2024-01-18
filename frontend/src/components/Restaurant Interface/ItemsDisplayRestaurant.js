@@ -24,7 +24,7 @@ import {
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { State } from "../../Context/Provider";
 import { useNavigate } from "react-router-dom";
-import { URL } from "../../App";
+import { URL } from "../../Urls";
 
 const ItemsDisplayRestaurant = ({ searchTerm, sortOrder }) => {
   const { hotel, restaurantId, setRestaurantId, isInRestaurantMain } = State();

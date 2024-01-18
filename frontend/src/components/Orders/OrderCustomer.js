@@ -21,7 +21,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { State } from "../../Context/Provider";
-import { URL } from "../../App";
+import { URL } from "../../Urls";
 
 const OrderCustomer = () => {
   const [newUser, setNewUser] = useState(null);

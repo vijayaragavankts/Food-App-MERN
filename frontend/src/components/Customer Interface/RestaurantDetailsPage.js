@@ -5,7 +5,7 @@ import axios from "axios";
 import RestaurantDetails from "./RestaurantDetails";
 import { Container } from "@chakra-ui/react";
 import NotFound from "../../NotFound";
-import { URL } from "../../App";
+import { URL } from "../../Urls";
 
 const RestaurantDetailsPage = () => {
   const { id } = useParams();

@@ -30,15 +30,17 @@ console.log(process.env.MONGO_URI);
 mongoose.connect(process.env.MONGO_URI);
 
 const app = express();
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
-      "https://backend-food-app-api.onrender.com",
-    ], // Replace with the actual origin of your frontend
-    credentials: true,
-  })
-);
+
+app.use(cors());
+// app.use(
+//   cors({
+//     origin: [
+//       "http://localhost:3000",
+//       "https://bite-burst-cbarcptqn-vijayaragavans-projects.vercel.app/",
+//     ], // Replace with the actual origin of your frontend
+//     credentials: true,
+//   })
+// );
 
 app.use(express.json()); // middleware
 

@@ -16,7 +16,7 @@ import {
 import axios from "axios";
 import { State } from "../../Context/Provider";
 import { useNavigate } from "react-router-dom";
-import { URL } from "../../App";
+import { URL } from "../../Urls";
 
 const OrderRestaurant = () => {
   const [loading, setLoading] = useState(true);

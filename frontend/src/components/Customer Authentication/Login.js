@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { URL } from "../../App";
+import { URL } from "../../Urls";
 
 // clearing localStorage
 // localStorage.clear();
@@ -30,7 +30,18 @@ const Login = () => {
 
   const submitHandler = async () => {
     setLoading(true);
+
+    // Show loading toast message
+    const loadingToastId = toast({
+      title: "Connecting to the server...",
+      duration: null, // Set duration to null for indefinite duration
+      status: "info",
+      isClosable: false,
+      position: "top",
+    });
+
     if (!username || !password) {
+      // Display warning toast for missing fields
       toast({
         title: "Please fill all the fields",
         duration: 4000,
@@ -38,19 +49,22 @@ const Login = () => {
         isClosable: true,
         position: "top",
       });
+
       setLoading(false);
+      // Close the loading toast message
+      toast.close(loadingToastId);
       return;
     }
+
     try {
-      const data = await axios.post(
-        `${URL}/customer/login`,
-        {
-          username,
-          password,
-        },
-        { withCredentials: true }
-      );
+      const data = await axios.post(`${URL}/customer/login`, {
+        username,
+        password,
+      });
+
       console.log(data);
+
+      // Display success toast for login
       toast({
         title: "Login Successful",
         duration: 4000,
@@ -58,21 +72,29 @@ const Login = () => {
         isClosable: true,
         position: "top",
       });
+
       localStorage.setItem("userInfo", JSON.stringify(data));
       localStorage.setItem("customerId", data.data.id);
       setLoading(false);
       navigate("/customerMain");
 
+      // Close the loading toast message
+      toast.close(loadingToastId);
+
       return;
     } catch (err) {
+      // Display error toast for login failure
       toast({
-        title: "Error Occured!",
-        description: err.response.data.message,
+        title: "Error Occurred!",
+        description: err.response ? err.response.data.message : "Network error",
         status: "error",
         duration: 5000,
         isClosable: true,
       });
+
       setLoading(false);
+      // Close the loading toast message
+      toast.close(loadingToastId);
     }
   };
 
