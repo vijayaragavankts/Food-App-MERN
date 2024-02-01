@@ -32,6 +32,7 @@ const RestaurantDetailsPage = () => {
   const fetchSingleRestaurant = async () => {
     try {
       const config = {
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${newUser.data.token}`,
         },

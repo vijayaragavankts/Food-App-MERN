@@ -102,6 +102,7 @@ const CreateNewItem = () => {
 
     try {
       const config = {
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${newHotel.data.token}`,
         },

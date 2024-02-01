@@ -40,6 +40,7 @@ const OrderRestaurant = () => {
     const fetchorders = async () => {
       try {
         const config = {
+          credentials: "include",
           headers: {
             Authorization: `Bearer ${newHotel.data.token}`,
           },
@@ -78,6 +79,7 @@ const OrderRestaurant = () => {
   const handleDelivery = async (id) => {
     try {
       const config = {
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${newHotel.data.token}`,
         },

@@ -46,6 +46,7 @@ const ItemsDisplayRestaurant = ({ searchTerm, sortOrder }) => {
   const fetchAllItems = async () => {
     try {
       const config = {
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${newHotel.data.token}`,
         },
@@ -137,6 +138,7 @@ const ItemsDisplayRestaurant = ({ searchTerm, sortOrder }) => {
     }
     try {
       const config = {
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${newHotel.data.token}`,
         },
@@ -227,6 +229,7 @@ const ItemsDisplayRestaurant = ({ searchTerm, sortOrder }) => {
     }
     try {
       const config = {
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${newHotel.data.token}`,
         },

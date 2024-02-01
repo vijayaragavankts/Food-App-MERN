@@ -50,6 +50,7 @@ const OrderCustomer = () => {
       }
 
       const config = {
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${newUser.data.token}`,
         },
@@ -83,6 +84,7 @@ const OrderCustomer = () => {
   const removeFromCart = async (itemId) => {
     try {
       const config = {
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${newUser.data.token}`,
         },
@@ -148,6 +150,7 @@ const OrderCustomer = () => {
             try {
               console.log("hello");
               const config = {
+                credentials: "include",
                 headers: {
                   Authorization: `Bearer ${newUser.data.token}`,
                 },
@@ -181,6 +184,7 @@ const OrderCustomer = () => {
                 const customer = newUser.data.id;
                 try {
                   const config = {
+                    credentials: "include",
                     headers: {
                       Authorization: `Bearer ${newUser.data.token}`,
                     },

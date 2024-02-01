@@ -35,6 +35,7 @@ const RestaurantListCustomer = ({ searchTerm, filter, sortOrder }) => {
   const fetchAll = async () => {
     try {
       const config = {
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${newUser.data.token}`,
         },

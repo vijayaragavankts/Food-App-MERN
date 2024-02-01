@@ -46,6 +46,7 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
     try {
       // console.log(user.data.token);
       const config = {
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${newUser.data.token}`,
         },
@@ -79,6 +80,7 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
     const fetchCartItems = async () => {
       try {
         const config = {
+          credentials: "include",
           headers: {
             Authorization: `Bearer ${newUser.data.token}`,
           },
@@ -109,6 +111,7 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
   const handleAddToCart = async (item) => {
     try {
       const config = {
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${newUser.data.token}`,
         },
@@ -164,6 +167,7 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
     try {
       // Implement the logic to remove the item from the cart in the database
       const config = {
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${newUser.data.token}`,
         },
