@@ -1,8 +1,10 @@
 import { Box, Container, Flex, Input, Select } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import RestaurantListCustomer from "./RestaurantListCustomer";
+import React, { lazy, useEffect, useState, Suspense } from "react";
+// import RestaurantListCustomer from "./RestaurantListCustomer";
 import { useNavigate } from "react-router-dom";
 import { State } from "../../Context/Provider";
+
+const RestaurantListCustomer = lazy(() => import("./RestaurantListCustomer"));
 
 const CustomerMain = () => {
   const [searchTerm, setSearchTerm] = useState(
@@ -78,11 +80,13 @@ const CustomerMain = () => {
           </Select>
         </Flex>
       </Container>
-      <RestaurantListCustomer
-        searchTerm={searchTerm}
-        filter={filter}
-        sortOrder={sortOrder}
-      />
+      <Suspense fallback="Loading...">
+        <RestaurantListCustomer
+          searchTerm={searchTerm}
+          filter={filter}
+          sortOrder={sortOrder}
+        />
+      </Suspense>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { lazy, useEffect, useState, Suspense } from "react";
 
 import {
   Box,
@@ -9,8 +9,10 @@ import {
   Select,
   Text,
 } from "@chakra-ui/react";
-import ItemDisplayListCustomer from "./ItemDisplayListCustomer";
+// import ItemDisplayListCustomer from "./ItemDisplayListCustomer";
 import { useNavigate } from "react-router-dom";
+
+const ItemDisplayListCustomer = lazy(() => import("./ItemDisplayListCustomer"));
 
 const ItemsHotel = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -60,7 +62,12 @@ const ItemsHotel = () => {
           </Select>
         </Flex>
       </Container>
-      <ItemDisplayListCustomer searchTerm={searchTerm} sortOrder={sortOrder} />
+      <Suspense fallback="Loading...">
+        <ItemDisplayListCustomer
+          searchTerm={searchTerm}
+          sortOrder={sortOrder}
+        />
+      </Suspense>
     </>
   );
 };

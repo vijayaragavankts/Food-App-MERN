@@ -1,41 +1,155 @@
 import "./App.css";
-import React from "react";
-import Home from "./components/Home";
+import React, { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import RestaurantHome from "./components/RestaurantHome";
-import CustomerHome from "./components/CustomerHome";
-import RestaurantMain from "./components/Restaurant Interface/RestaurantMain";
-import CustomerMain from "./components/Customer Interface/CustomerMain";
-import RestaurantDetailsPage from "./components/Customer Interface/RestaurantDetailsPage";
-import ItemsHotel from "./components/Customer Interface/ItemsHotel";
-import CreateNewItem from "./components/Restaurant Interface/CreateNewItem";
-import NotFound from "./NotFound";
-import OrderCustomer from "./components/Orders/OrderCustomer";
-import OrderRestaurant from "./components/Orders/OrderRestaurant";
+
+const Home = lazy(() => import("./components/Home"));
+// import Home from "./components/Home";
+
+// import RestaurantHome from "./components/RestaurantHome";
+const RestaurantHome = lazy(() => import("./components/RestaurantHome"));
+
+// import CustomerHome from "./components/CustomerHome";
+const CustomerHome = lazy(() => import("./components/CustomerHome"));
+
+// import RestaurantMain from "./components/Restaurant Interface/RestaurantMain";
+const RestaurantMain = lazy(() =>
+  import("./components/Restaurant Interface/RestaurantMain")
+);
+
+// import CustomerMain from "./components/Customer Interface/CustomerMain";
+const CustomerMain = lazy(() =>
+  import("./components/Customer Interface/CustomerMain")
+);
+
+// import RestaurantDetailsPage from "./components/Customer Interface/RestaurantDetailsPage";
+const RestaurantDetailsPage = lazy(() =>
+  import("./components/Customer Interface/RestaurantDetailsPage")
+);
+
+// import ItemsHotel from "./components/Customer Interface/ItemsHotel";
+const ItemsHotel = lazy(() =>
+  import("./components/Customer Interface/ItemsHotel")
+);
+
+// import CreateNewItem from "./components/Restaurant Interface/CreateNewItem";
+const CreateNewItem = lazy(() =>
+  import("./components/Restaurant Interface/CreateNewItem")
+);
+
+// import NotFound from "./NotFound";
+const NotFound = lazy(() => import("./NotFound"));
+
+// import OrderCustomer from "./components/Orders/OrderCustomer";
+const OrderCustomer = lazy(() => import("./components/Orders/OrderCustomer"));
+
+// import OrderRestaurant from "./components/Orders/OrderRestaurant";
+const OrderRestaurant = lazy(() =>
+  import("./components/Orders/OrderRestaurant")
+);
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Home />} exact />
-        <Route path="/restaurant" element={<RestaurantHome />} exact />
-        <Route path="/customer" element={<CustomerHome />} exact />
-        <Route path="/restaurantMain" element={<RestaurantMain />} exact />
-        <Route path="/customerMain" element={<CustomerMain />} exact />
+        <Route
+          path="/"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <Home />
+            </Suspense>
+          }
+          exact
+        />
+        <Route
+          path="/restaurant"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <RestaurantHome />
+            </Suspense>
+          }
+          exact
+        />
+        <Route
+          path="/customer"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <CustomerHome />
+            </Suspense>
+          }
+          exact
+        />
+        <Route
+          path="/restaurantMain"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <RestaurantMain />
+            </Suspense>
+          }
+          exact
+        />
+        <Route
+          path="/customerMain"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <CustomerMain />
+            </Suspense>
+          }
+          exact
+        />
         <Route
           path="/restaurant/:id"
-          element={<RestaurantDetailsPage />}
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <RestaurantDetailsPage />
+            </Suspense>
+          }
           exact
         />
-        <Route path="/:id/items" element={<ItemsHotel />} exact />
-        <Route path="/create" element={<CreateNewItem />} exact />
-        <Route path="/notFound" element={<NotFound />} exact />
+        <Route
+          path="/:id/items"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <ItemsHotel />
+            </Suspense>
+          }
+          exact
+        />
+        <Route
+          path="/create"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <CreateNewItem />
+            </Suspense>
+          }
+          exact
+        />
+        <Route
+          path="/notFound"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <NotFound />
+            </Suspense>
+          }
+          exact
+        />
         <Route
           path="/customerMain/:id/cart"
-          element={<OrderCustomer />}
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <OrderCustomer />
+            </Suspense>
+          }
           exact
         />
-        <Route path="/restaurantOrders" element={<OrderRestaurant />} exact />
+        <Route
+          path="/restaurantOrders"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <OrderRestaurant />
+            </Suspense>
+          }
+          exact
+        />
       </Routes>
     </div>
   );

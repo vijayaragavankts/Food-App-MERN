@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { lazy, useEffect, useState, Suspense } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { State } from "../../Context/Provider";
 import axios from "axios";
-import RestaurantDetails from "./RestaurantDetails";
+// import RestaurantDetails from "./RestaurantDetails";
 import { Container } from "@chakra-ui/react";
 import NotFound from "../../NotFound";
 import { URL } from "../../Urls";
+
+const RestaurantDetails = lazy(() => import("./RestaurantDetails"));
 
 const RestaurantDetailsPage = () => {
   const { id } = useParams();
@@ -64,9 +66,11 @@ const RestaurantDetailsPage = () => {
     <>
       <Container maxW="container.lg" mt={10}>
         {restaurantInfo && restaurantInfo.length > 0 ? (
-          <RestaurantDetails prop={restaurantInfo} />
+          <Suspense fallback="Loading...">
+            <RestaurantDetails prop={restaurantInfo} />
+          </Suspense>
         ) : (
-          <NotFound />
+          <div>Loading...</div>
         )}
       </Container>
     </>

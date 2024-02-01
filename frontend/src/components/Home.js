@@ -8,6 +8,10 @@ import "slick-carousel/slick/slick-theme.css";
 
 const quotesData = [
   {
+    quote: "People who love to eat are always the best people.",
+    author: "Julia Child",
+  },
+  {
     quote: "The only thing I like better than talking about food is eating",
     author: "John Walters",
   },

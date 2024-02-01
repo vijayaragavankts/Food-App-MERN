@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import {
   Box,
   Container,
@@ -9,8 +9,11 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import Login from "./Customer Authentication/Login";
-import Signup from "./Customer Authentication/Signup";
+// import Login from "./Customer Authentication/Login";
+// import Signup from "./Customer Authentication/Signup";
+
+const Login = lazy(() => import("./Customer Authentication/Login"));
+const Signup = lazy(() => import("./Customer Authentication/Signup"));
 
 const CustomerHome = () => {
   return (
@@ -43,11 +46,15 @@ const CustomerHome = () => {
             <TabPanels>
               <TabPanel>
                 {" "}
-                <Login />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Login />
+                </Suspense>
               </TabPanel>{" "}
               <TabPanel>
                 {" "}
-                <Signup />{" "}
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Signup />{" "}
+                </Suspense>
               </TabPanel>{" "}
             </TabPanels>{" "}
           </Tabs>{" "}
