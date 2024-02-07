@@ -3,6 +3,7 @@ import React, { lazy, useEffect, useState, Suspense } from "react";
 // import RestaurantListCustomer from "./RestaurantListCustomer";
 import { useNavigate } from "react-router-dom";
 import { State } from "../../Context/Provider";
+import Loader from "../Loader";
 
 const RestaurantListCustomer = lazy(() => import("./RestaurantListCustomer"));
 
@@ -80,7 +81,7 @@ const CustomerMain = () => {
           </Select>
         </Flex>
       </Container>
-      <Suspense fallback="Loading...">
+      <Suspense fallback={<Loader />}>
         <RestaurantListCustomer
           searchTerm={searchTerm}
           filter={filter}

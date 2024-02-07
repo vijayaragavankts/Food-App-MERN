@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 // import ItemDisplayListCustomer from "./ItemDisplayListCustomer";
 import { useNavigate } from "react-router-dom";
+import Loader from "../Loader";
 
 const ItemDisplayListCustomer = lazy(() => import("./ItemDisplayListCustomer"));
 
@@ -25,6 +26,11 @@ const ItemsHotel = () => {
       navigate("/customer");
     }
   }, []);
+
+  useEffect(() => {
+    console.log(searchTerm);
+    console.log(sortOrder);
+  }, [searchTerm, sortOrder]);
 
   const handleSearch = (event) => {
     const value = event.target.value;
@@ -62,7 +68,7 @@ const ItemsHotel = () => {
           </Select>
         </Flex>
       </Container>
-      <Suspense fallback="Loading...">
+      <Suspense fallback={<Loader />}>
         <ItemDisplayListCustomer
           searchTerm={searchTerm}
           sortOrder={sortOrder}

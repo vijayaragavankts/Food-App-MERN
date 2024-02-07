@@ -17,6 +17,7 @@ import axios from "axios";
 import { State } from "../../Context/Provider";
 import { useNavigate } from "react-router-dom";
 import { URL } from "../../Urls";
+import Loader from "../Loader"; // Import the Loader component
 
 const OrderRestaurant = () => {
   const [loading, setLoading] = useState(true);
@@ -60,22 +61,6 @@ const OrderRestaurant = () => {
     fetchorders();
   }, [hotel, newHotel, temp]);
 
-  // const handleTotal = (itemArray, qtyArray) => {
-  //   let total = 0;
-
-  //   // Iterate over each item in the array
-  //   for (let i = 0; i < itemArray.length; i++) {
-  //     // Calculate the subtotal for the current item (price * quantity)
-  //     const subtotal = itemArray[i].price * qtyArray[i];
-
-  //     // Add the subtotal to the total
-  //     total += subtotal;
-  //   }
-
-  //   // Return the total amount
-  //   return total;
-  // };
-
   const handleDelivery = async (id) => {
     try {
       const config = {
@@ -113,11 +98,7 @@ const OrderRestaurant = () => {
         Orders for Restaurant
       </Heading>
 
-      {loading ? (
-        <Text fontSize="lg" color="teal.500">
-          Loading...
-        </Text>
-      ) : (
+      {info.length > 0 ? (
         <Table mt={4} variant="striped">
           <Thead>
             <Tr>
@@ -160,6 +141,8 @@ const OrderRestaurant = () => {
             ))}
           </Tbody>
         </Table>
+      ) : (
+        <div>{`No Orders :(`}</div>
       )}
     </Box>
   );

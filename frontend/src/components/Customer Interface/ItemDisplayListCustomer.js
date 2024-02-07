@@ -9,42 +9,37 @@ import {
   Flex,
   Image,
   Text,
-  Toast,
   VStack,
   useToast,
 } from "@chakra-ui/react";
 import NotFound from "../../NotFound";
 import { URL } from "../../Urls";
+import Loader from "../Loader";
 
 const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
   const { id } = useParams();
   const location = useLocation();
-  // Access the search property of the location object, which contains the query string
   const queryString = location.search;
-  // Use a helper function to parse the query string into an object
   const queryParams = new URLSearchParams(queryString);
   const category = queryParams.get("category");
   const { user } = State();
   const [itemInfo, setItemInfo] = useState([]);
   const [cartItems, setCartItems] = useState([]);
-
   const [newUser, setNewUser] = useState();
   const navigate = useNavigate();
   const toast = useToast();
+  const [loading, setLoading] = useState(true); // State to track loading
 
   useEffect(() => {
     if (!JSON.parse(localStorage.getItem("userInfo"))) {
       navigate("/customer");
     }
-    // Fetch user data from localStorage only once when the component mounts
     const storedUser = JSON.parse(localStorage.getItem("userInfo"));
     setNewUser(storedUser);
   }, [navigate]);
 
-  // fetch items in that restaurant and category
   const fetchItems = async () => {
     try {
-      // console.log(user.data.token);
       const config = {
         credentials: "include",
         headers: {
@@ -55,27 +50,13 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
         `${URL}/showRestaurantsToCustomer/${id}/items?category=${category}`,
         config
       );
-
-      console.log(data.data);
       setItemInfo(data.data);
-
-      //   setItemInfo(data.data);
+      setLoading(false); // Set loading to false after fetching items
     } catch (err) {
       console.error("Error fetching items:", err);
     }
   };
 
-  const filteredAndSortedItems = itemInfo
-    .filter((item) =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-
-    .sort((a, b) => {
-      const compareResult =
-        sortOrder === "asc" ? a.price - b.price : b.price - a.price;
-      return compareResult;
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
@@ -89,8 +70,6 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
           `${URL}/orderFromCustomer/customer/${newUser.data.id}`,
           config
         );
-
-        // Initialize the cartItems state with the fetched data
         setCartItems(
           data.data.map((item) => ({
             itemId: item.item,
@@ -101,12 +80,22 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
         console.error("Error fetching cart items:", err);
       }
     };
-
-    // Fetch initial cart items when the component mounts
     fetchCartItems();
-
     fetchItems();
   }, [searchTerm, sortOrder, id, category, newUser]);
+
+  // ----------------------------------------------------------------------------------------------
+  const filteredAndSortedItems = itemInfo
+    .filter((item) =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      const compareResult =
+        sortOrder === "asc" ? a.price - b.price : b.price - a.price;
+      return compareResult;
+    });
+
+  // ------------------------------------------------------------------------------------------------
 
   const handleAddToCart = async (item) => {
     try {
@@ -121,17 +110,14 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
       const restaurant = item.restaurant;
       const quantity = 1;
       const customer = newUser.data.id;
-      console.log(itemId, price, restaurant, quantity, customer);
 
       const existingCartItemIndex = cartItems.findIndex(
         (cartItem) => cartItem.itemId === itemId
       );
 
       if (existingCartItemIndex !== -1) {
-        // Item is already in the cart, handle removal
         await handleRemoveFromCart(itemId);
       } else {
-        // Item is not in the cart, add it
         const data = await axios.post(
           `${URL}/orderFromCustomer`,
           { itemId, price, restaurant, quantity, customer },
@@ -148,7 +134,6 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
           });
         }
 
-        // Update the cartItems state with the added item
         setCartItems([...cartItems, { itemId, quantity }]);
       }
     } catch (err) {
@@ -165,26 +150,20 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
 
   const handleRemoveFromCart = async (itemId) => {
     try {
-      // Implement the logic to remove the item from the cart in the database
       const config = {
         credentials: "include",
         headers: {
           Authorization: `Bearer ${newUser.data.token}`,
         },
       };
-
       const data = await axios.delete(
         `${URL}/orderFromCustomer/${itemId}`,
         config
       );
-
-      // Update the cartItems state to remove the item
       const updatedCartItems = cartItems.filter(
         (cartItem) => cartItem.itemId !== itemId
       );
       setCartItems(updatedCartItems);
-
-      // Notify the user that the item has been removed
       if (data) {
         toast({
           status: "success",
@@ -209,8 +188,12 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
   return (
     <div>
       <Flex justify="center" wrap="wrap">
-        {filteredAndSortedItems
-          ? filteredAndSortedItems.map((item) => (
+        {loading ? ( // Show loader if loading is true
+          <Loader />
+        ) : (
+          // Render the item display list when loading is false
+          <>
+            {filteredAndSortedItems.map((item) => (
               <Box
                 key={item._id}
                 maxW="sm"
@@ -220,7 +203,6 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
                 m={4}
                 boxShadow="base"
               >
-                {/* <Link to={`/restaurant/${restaurant._id}`}> */}
                 <Image src={item.image} alt={item.name} />
                 <Box p={4}>
                   <Text fontSize="5xl" fontWeight="bold" fontFamily="Long Cang">
@@ -232,11 +214,6 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
                   <Text fontSize="md" color="gray.600">
                     {item.description}
                   </Text>
-                  {/* <Flex align="center" mt={2}>
-                <Badge colorScheme="green" mr={2}>
-                  Rating: {restaurant.rating}
-                </Badge>
-              </Flex> */}
                   <VStack mt={4} spacing={2}>
                     <Button
                       colorScheme={
@@ -256,10 +233,10 @@ const ItemDisplayListCustomer = ({ searchTerm, sortOrder }) => {
                     </Button>
                   </VStack>
                 </Box>
-                {/* </Link> */}
               </Box>
-            ))
-          : ""}
+            ))}
+          </>
+        )}
       </Flex>
     </div>
   );

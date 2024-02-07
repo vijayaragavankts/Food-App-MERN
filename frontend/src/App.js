@@ -1,6 +1,7 @@
 import "./App.css";
 import React, { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
+import Loader from "./components/Loader";
 
 const Home = lazy(() => import("./components/Home"));
 // import Home from "./components/Home";
@@ -54,7 +55,7 @@ function App() {
         <Route
           path="/"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <Home />
             </Suspense>
           }
@@ -63,7 +64,7 @@ function App() {
         <Route
           path="/restaurant"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <RestaurantHome />
             </Suspense>
           }
@@ -72,7 +73,7 @@ function App() {
         <Route
           path="/customer"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <CustomerHome />
             </Suspense>
           }
@@ -81,7 +82,7 @@ function App() {
         <Route
           path="/restaurantMain"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <RestaurantMain />
             </Suspense>
           }
@@ -90,7 +91,7 @@ function App() {
         <Route
           path="/customerMain"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <CustomerMain />
             </Suspense>
           }
@@ -99,7 +100,7 @@ function App() {
         <Route
           path="/restaurant/:id"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <RestaurantDetailsPage />
             </Suspense>
           }
@@ -108,7 +109,7 @@ function App() {
         <Route
           path="/:id/items"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <ItemsHotel />
             </Suspense>
           }
@@ -117,7 +118,7 @@ function App() {
         <Route
           path="/create"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <CreateNewItem />
             </Suspense>
           }
@@ -126,7 +127,7 @@ function App() {
         <Route
           path="/notFound"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <NotFound />
             </Suspense>
           }
@@ -135,7 +136,7 @@ function App() {
         <Route
           path="/customerMain/:id/cart"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <OrderCustomer />
             </Suspense>
           }
@@ -144,7 +145,7 @@ function App() {
         <Route
           path="/restaurantOrders"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <OrderRestaurant />
             </Suspense>
           }

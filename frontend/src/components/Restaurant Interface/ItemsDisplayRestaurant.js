@@ -25,12 +25,14 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { State } from "../../Context/Provider";
 import { useNavigate } from "react-router-dom";
 import { URL } from "../../Urls";
+import Loader from "../Loader"; // Import the Loader component
 
 const ItemsDisplayRestaurant = ({ searchTerm, sortOrder }) => {
   const { hotel, restaurantId, setRestaurantId, isInRestaurantMain } = State();
   const [itemDetail, setItemDetail] = useState([]);
   const [newHotel, setNewHotel] = useState();
   const [selectedItem, setSelectedItem] = useState(null);
+  const [loading, setLoading] = useState(true); // State to track loading
 
   const navigate = useNavigate();
   const toast = useToast();
@@ -59,6 +61,7 @@ const ItemsDisplayRestaurant = ({ searchTerm, sortOrder }) => {
       );
       console.log(data.data);
       setItemDetail(data.data);
+      setLoading(false); // Set loading to false after fetching items
     } catch (err) {
       console.log(err);
     }
@@ -68,7 +71,6 @@ const ItemsDisplayRestaurant = ({ searchTerm, sortOrder }) => {
     .filter((item) =>
       item.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
-
     .sort((a, b) => {
       const compareResult =
         sortOrder === "asc" ? a.price - b.price : b.price - a.price;
@@ -275,53 +277,59 @@ const ItemsDisplayRestaurant = ({ searchTerm, sortOrder }) => {
 
   return (
     <>
-      <Flex justify="center" wrap="wrap">
-        {filteredAndSortedItems.map((item) => (
-          <Box
-            key={item._id}
-            maxW="sm"
-            borderWidth="1px"
-            borderRadius="lg"
-            overflow="hidden"
-            m={4}
-            boxShadow="base"
-          >
-            <Image
-              src={
-                item.image
-                  ? item.image
-                  : "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=600"
-              }
-              alt={item.name}
-            />
-            <Box p={4}>
-              <Text fontSize="5xl" fontWeight="bold" fontFamily="Long Cang">
-                {item.name}
-              </Text>
-              <Text fontSize="3xl" color="gray.600">
-                {`$${item.price}`}
-              </Text>
-              <Text fontSize="md" color="gray.600">
-                {item.description}
-              </Text>
-              <Flex justify="space-around" align="center" mb={3} mt={3}>
-                <EditIcon
-                  fontSize="2xl"
-                  color="green"
-                  cursor="pointer"
-                  onClick={() => handleEdit(item)}
-                />
-                <DeleteIcon
-                  fontSize="2xl"
-                  color="red"
-                  cursor="pointer"
-                  onClick={() => handleDelete(item._id)}
-                />
-              </Flex>
+      {loading ? ( // Render the loader if loading is true
+        <Flex justify="center" alignItems="center">
+          <Loader />
+        </Flex>
+      ) : (
+        <Flex justify="center" wrap="wrap">
+          {filteredAndSortedItems.map((item) => (
+            <Box
+              key={item._id}
+              maxW="sm"
+              borderWidth="1px"
+              borderRadius="lg"
+              overflow="hidden"
+              m={4}
+              boxShadow="base"
+            >
+              <Image
+                src={
+                  item.image
+                    ? item.image
+                    : "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=600"
+                }
+                alt={item.name}
+              />
+              <Box p={4}>
+                <Text fontSize="5xl" fontWeight="bold" fontFamily="Long Cang">
+                  {item.name}
+                </Text>
+                <Text fontSize="3xl" color="gray.600">
+                  {`$${item.price}`}
+                </Text>
+                <Text fontSize="md" color="gray.600">
+                  {item.description}
+                </Text>
+                <Flex justify="space-around" align="center" mb={3} mt={3}>
+                  <EditIcon
+                    fontSize="2xl"
+                    color="green"
+                    cursor="pointer"
+                    onClick={() => handleEdit(item)}
+                  />
+                  <DeleteIcon
+                    fontSize="2xl"
+                    color="red"
+                    cursor="pointer"
+                    onClick={() => handleDelete(item._id)}
+                  />
+                </Flex>
+              </Box>
             </Box>
-          </Box>
-        ))}
-      </Flex>
+          ))}
+        </Flex>
+      )}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

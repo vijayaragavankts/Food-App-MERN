@@ -9,6 +9,7 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
+import Loader from "./Loader";
 // import Login from "./Customer Authentication/Login";
 // import Signup from "./Customer Authentication/Signup";
 
@@ -46,13 +47,13 @@ const CustomerHome = () => {
             <TabPanels>
               <TabPanel>
                 {" "}
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<Loader />}>
                   <Login />
                 </Suspense>
               </TabPanel>{" "}
               <TabPanel>
                 {" "}
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<Loader />}>
                   <Signup />{" "}
                 </Suspense>
               </TabPanel>{" "}

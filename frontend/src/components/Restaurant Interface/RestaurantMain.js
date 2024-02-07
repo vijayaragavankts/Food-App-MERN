@@ -7,11 +7,14 @@ import {
   Input,
   Select,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import ItemsDisplayRestaurant from "./ItemsDisplayRestaurant";
+import React, { lazy, useEffect, useState, Suspense } from "react";
+// import ItemsDisplayRestaurant from "./ItemsDisplayRestaurant";
 import { useNavigate } from "react-router-dom";
 import { AddIcon } from "@chakra-ui/icons";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
+import Loader from "../Loader";
+
+const ItemsDisplayRestaurant = lazy(() => import("./ItemsDisplayRestaurant"));
 
 const RestaurantMain = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -98,7 +101,9 @@ const RestaurantMain = () => {
           </Button>
         </Flex>
       </Container>
-      <ItemsDisplayRestaurant searchTerm={searchTerm} sortOrder={sortOrder} />
+      <Suspense fallback={<Loader />}>
+        <ItemsDisplayRestaurant searchTerm={searchTerm} sortOrder={sortOrder} />
+      </Suspense>
     </>
   );
 };

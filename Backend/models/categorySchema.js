@@ -26,7 +26,7 @@ categorySchema.pre("save", function (next) {
     next();
   } else if (this.category_name == "Starters") {
     this.image =
-      "https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=600";
+      "https://images.pexels.com/photos/6972870/pexels-photo-6972870.jpeg?auto=compress&cs=tinysrgb&w=600";
     next();
   } else if (this.category_name == "Sides") {
     this.image =

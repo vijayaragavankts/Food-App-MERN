@@ -6,6 +6,7 @@ import axios from "axios";
 import { Container } from "@chakra-ui/react";
 import NotFound from "../../NotFound";
 import { URL } from "../../Urls";
+import Loader from "../Loader";
 
 const RestaurantDetails = lazy(() => import("./RestaurantDetails"));
 
@@ -67,11 +68,11 @@ const RestaurantDetailsPage = () => {
     <>
       <Container maxW="container.lg" mt={10}>
         {restaurantInfo && restaurantInfo.length > 0 ? (
-          <Suspense fallback="Loading...">
+          <Suspense fallback={<Loader />}>
             <RestaurantDetails prop={restaurantInfo} />
           </Suspense>
         ) : (
-          <div>Loading...</div>
+          <Loader />
         )}
       </Container>
     </>
